@@ -1,4 +1,3 @@
 <Solution>
   <Project Path="MiniSaaSBackend/MiniSaaSBackend.csproj" />
-  <Project Path="Models/Models.csproj" />
 </Solution>

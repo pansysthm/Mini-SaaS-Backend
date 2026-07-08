@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using MiniSaaSBackend.Entities;
 
@@ -8,6 +9,14 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (Debugger.IsAttached || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            optionsBuilder.LogTo(Console.WriteLine).EnableSensitiveDataLogging();
+        }
     }
 
     public DbSet<User> Users { get; set; } = null!;
@@ -23,6 +32,7 @@ public class ApplicationDbContext : DbContext
         // User Configurations
         modelBuilder.Entity<User>(entity =>
         {
+            entity.Property(u => u.Name).IsRequired().HasMaxLength(255);
             entity.HasIndex(u => u.Email).IsUnique();
             entity.Property(u => u.Email).IsRequired().HasMaxLength(256);
             entity.Property(u => u.PasswordHash).IsRequired();
