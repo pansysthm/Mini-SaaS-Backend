@@ -5,7 +5,7 @@ public class AppFile
     public Guid Id { get; set; } = Guid.NewGuid();
     
     public Guid UserId { get; set; }
-    public User? User { get; set; }
+    public User? User { get; set; } // tránh lazy loading nên không dùng virtual
     
     public string FileName { get; set; } = string.Empty;
     
